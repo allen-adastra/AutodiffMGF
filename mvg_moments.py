@@ -116,26 +116,3 @@ def mvg_moments(mu, sigma, max_order):
             tensor_idx = multi_to_tensor_idx(multi_idx, dimension)
             moment_values[multi_idx] = moment_tensor[tensor_idx]
     return moment_values
-
-def test_moment_tensor_consistent(tolerance=1e-10):
-    """ Test that elements of the moment tensor are consistent. That is,
-        for any two moment tensor indices, if they have the same corresponding
-        multi-index, then they have the same values.
-    """
-    # Test parameters.
-    max_order = 8
-    dimension = 2
-    mu = np.array([-2.0, 1.0])
-    sigma = np.array([[1.0, 0.1], [0.1, 0.5]])
-
-    moment_tensors = mvg_moment_tensors(mu, sigma, max_order, dimension)
-    moment_values = mvg_moments(mu, sigma, max_order)
-    for moment_tensor in moment_tensors.values():
-        for tensor_idx in np.ndindex(moment_tensor.shape):
-            multi_idx = tensor_to_multi_idx(tensor_idx, dimension)
-            assert abs(moment_tensor[tensor_idx]-moment_values[multi_idx])<=tolerance
-
-max_order = 8
-mu = np.array([0, 0])
-sigma = np.array([[1.0, 0.1], [0.1, 1.0]])
-mvg_moments(mu, sigma, max_order)
