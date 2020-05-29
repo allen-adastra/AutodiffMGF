@@ -2,7 +2,7 @@
 load order6.mat
 
 % Specify maximum order of moments to use.
-max_order = 4;
+max_order = 6;
 n_cases = size(collision_moments, 1);
 
 % Result arrays.
@@ -10,7 +10,8 @@ risk_bounds = zeros(1, n_cases);
 flags = zeros(1, n_cases);
 solve_times = zeros(1, n_cases);
 
-parfor i = 12:n_cases
+for i = 1:n_cases
+    foo = normalize_moments(collision_moments(i, 1:max_order);
     [rb, f, sol]  = univariate_sos_risk_bound(collision_moments(i, 1:max_order), "sedumi");
     risk_bounds(i) = rb;
     flags(i) = f;
