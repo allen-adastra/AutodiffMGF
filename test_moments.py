@@ -1,8 +1,6 @@
 from mvg_moments import *
 from collision_rv_moments import *
-
 from utils import *
-
 
 def test_moment_tensor_consistent(tolerance=1e-10):
     """ Test that elements of the moment tensor are consistent. That is,
@@ -23,7 +21,7 @@ def test_moment_tensor_consistent(tolerance=1e-10):
             assert abs(moment_tensor[tensor_idx]-moment_values[multi_idx])<=tolerance
 
 def test_collision_rv_moments(tolerance = 1e-10):
-    """ Test the collision rv moments that are computed against
+    """ Test the first four collision rv moments that are computed against
         a special case where the distribution is chi-squared.
     """
     # Specify the MVG x and Q s.t. Q(x) is a 2dof chi-squared 
@@ -36,10 +34,10 @@ def test_collision_rv_moments(tolerance = 1e-10):
     input_deterministic["q22"] = Q[1, 1]
 
     # Test the function to compute moments of Q(x) - 1.
-    input_moments = mvg_moments(mu, sigma, 8)
+    input_moments = mvg_moments(mu, sigma, 8) # need 2 * 4 momnets of the MVG
     computed_moments = collision_rv_moments(input_moments, input_deterministic)
 
-    # Compute ground truth.
+    # Compute ground truth up to order 4.
     Qmoments = {order : chi_square_moments(order, 2) for order in range(1, 5)}
     ground_truth = offset_moments(Qmoments, -1)
 

@@ -16,5 +16,5 @@ def offset_moments(moments, offset):
         # Substitute moments accordingly.
         for i in range(order, 0, -1):
             offset_expression = offset_expression.subs(m**i, moments[i])
-        offset_moments[order] = offset_expression
+        offset_moments[order] = float(offset_expression)
     return offset_moments
