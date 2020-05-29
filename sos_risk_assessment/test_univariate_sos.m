@@ -1,6 +1,8 @@
-load test.mat
+% Load moments computed in Python.
+load order6.mat
 
-
+% Specify maximum order of moments to use.
+max_order = 4;
 n_cases = size(collision_moments, 1);
 
 % Result arrays.
@@ -9,7 +11,7 @@ flags = zeros(1, n_cases);
 solve_times = zeros(1, n_cases);
 
 parfor i = 1:n_cases
-    [rb, f, sol]  = univariate_sos_risk_bound(collision_moments(i, :), "sedumi");
+    [rb, f, sol]  = univariate_sos_risk_bound(collision_moments(i, 1:max_order), "sedumi");
     risk_bounds(i) = rb;
     flags(i) = f;
     solve_times(i) = sol.solvertime;
@@ -23,9 +25,3 @@ for i = 1:n_cases
         chebyshev_risk_bounds(i) = (collision_moments(i, 2) - collision_moments(i, 1)^2)/collision_moments(i,2);
     end
 end
-
-plot(risk_bounds);
-hold on;
-plot(chebyshev_risk_bounds);
-
-legend("SOS Order 4", "Chebyshev")
